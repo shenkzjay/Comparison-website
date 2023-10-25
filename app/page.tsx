@@ -73,8 +73,8 @@ export default function Home() {
             Check and Compare Prices
           </h2>
           <p className="">
-            Compare prices for the items you wish to purchase across Nigeria's
-            top ecommerce platforms.
+            Compare prices for the items you wish to purchase across
+            Nigeria&apos;s top ecommerce platforms.
           </p>
         </div>
 
