@@ -8,6 +8,12 @@ export default function Home() {
   const [data, setData] = useState([]);
   const [isloading, setIsLoading] = useState<boolean>(false);
 
+  console.log("load", isloading);
+
+  const [error, setError] = useState<boolean>(false);
+
+  console.log("error", error);
+
   const search = {
     input,
   };
@@ -15,26 +21,36 @@ export default function Home() {
   useEffect(() => {
     if (sessionStorage.length > 0) {
       const stale_data = sessionStorage.getItem("data");
-      const parseData = JSON.parse(stale_data);
 
-      setData(parseData);
+      if (stale_data) {
+        const parseData = JSON.parse(stale_data);
+        setData(parseData);
+      }
     }
   }, []);
 
   const handleSubmit = async () => {
-    console.log(input);
+    try {
+      setIsLoading(true);
+      setError(false);
 
-    setIsLoading(true);
+      const data: any = await DataFetch(input);
 
-    const data: any = await DataFetch(input);
+      setData(data);
 
-    setData(data);
-
-    if (data) {
+      if (data && !data.error) {
+        setIsLoading(false);
+        setError(false);
+        sessionStorage.setItem("data", JSON.stringify(data));
+      } else {
+        setIsLoading(false);
+        setError(true);
+      }
+    } catch (error) {
+      console.error(error);
+      setError(true);
       setIsLoading(false);
     }
-
-    sessionStorage.setItem("data", JSON.stringify(data));
   };
 
   console.log("data", data);
@@ -42,6 +58,8 @@ export default function Home() {
   const konga = data && data?.konga?.elements;
 
   const jumia = data && data?.jumia?.items;
+
+  const jiji = data && data?.jiji?.products;
 
   console.log("jumia", konga);
 
@@ -51,7 +69,9 @@ export default function Home() {
     <main className=" fle flex-col justify-center w-[90vw] h-screen mx-auto">
       <div className="flex flex-col text-center space-y-6 pt-20">
         <div className="flex flex-col">
-          <h2 className="font-bold text-[56px] mb-2">Best Prices</h2>
+          <h2 className="font-bold text-[56px] mb-2">
+            Check and Compare Prices
+          </h2>
           <p className="">
             Compare prices for the items you wish to purchase across Nigeria's
             top ecommerce platforms.
@@ -64,6 +84,7 @@ export default function Home() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="border border-slate-300 outline-1 outline-slate-300 w-1/3 px-4 py-3 rounded-[10px]"
+            placeholder="Enter search keyword here..."
           />
         </div>
 
@@ -72,22 +93,31 @@ export default function Home() {
             onClick={handleSubmit}
             className="bg-cyan-600 px-4 py-3 rounded-[10px] font-bold text-white"
           >
-            Compare price
+            Get prices
           </button>
         </div>
       </div>
 
       {isloading ? (
         <div className="flex justify-center pt-40">
-          Sit back and relax while we gather the full range of prices for this
-          item.
+          <p>Loading...</p>
+          <p>Grab a cup of coffee while we fetch the latest prices for you.</p>
         </div>
+      ) : error ? (
+        <>Error</>
       ) : data && data.length <= 0 ? (
-        <div className="flex justify-center pt-40">No result found</div>
+        <div className="flex justify-center pt-40">No search result yet</div>
       ) : (
         <section className="flex flex-wrap gap-10 justify-center mt-20">
           <div className="w-[30%]">
-            <p>Jumia</p>
+            <div className="flex py-5 px-2 justify-center">
+              <img
+                src="/logo/jumia.png"
+                width={120}
+                height={100}
+                alt="jumia logo"
+              />
+            </div>
             {jumia &&
               jumia.map((product, index) => (
                 <div
@@ -108,7 +138,14 @@ export default function Home() {
           </div>
 
           <div className="w-[30%]">
-            <p>Konga</p>
+            <div className="flex py-5 px-2 justify-center">
+              <img
+                src="/logo/konga.png"
+                width={100}
+                height={100}
+                alt="konga logo"
+              />
+            </div>
             {konga &&
               konga.map((products, index) => (
                 <div
@@ -127,8 +164,27 @@ export default function Home() {
           </div>
 
           <div className="w-[30%]">
-            <Card name="iphone3" image="tatat" price="12313" link="asjdjlsj" />
-            <Card name="iphone3" image="tatat" price="12313" link="asjdjlsj" />
+            <div className="flex p-2 justify-center">
+              <img
+                src="/logo/jij.png"
+                width={100}
+                height={100}
+                alt="jiji logo"
+                className="object-contain w-[100px] h-[50px]"
+              />
+            </div>
+            {jiji &&
+              jiji.map((product, index) => (
+                <div key={index} className="bg-green-100 mb-4 rounded-[10px]">
+                  <Card
+                    name={product.productName}
+                    image={product.image}
+                    price={product.productPrice}
+                    link={product.link}
+                    color="bg-green-200"
+                  />
+                </div>
+              ))}
           </div>
         </section>
       )}

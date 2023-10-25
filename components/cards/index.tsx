@@ -20,7 +20,7 @@ const Card = ({ image, name, price, link, color }: CardProps) => {
               alt={name}
               width={150}
               height={100}
-              className="object-cover !w-[100px] !h-[100px]"
+              className="object-cover !w-[100px] !h-[100px] rounded-[10px]"
             />
           </div>
           <div className="flex flex-col justify-between">
