@@ -6,12 +6,10 @@ export const DataFetch = async (search: string) => {
   console.log(search);
 
   try {
-    const res = await fetch(
-      `http://localhost:3000/api/datafetch?search=${search}`,
-      {
-        method: "GET",
-      }
-    );
+    const res = await fetch(`/api/datafetch?search=${search}`, {
+      method: "GET",
+    });
+
     if (!res.ok) {
       throw new Error(
         "fetching data failed, please check connection and try again"
@@ -20,7 +18,18 @@ export const DataFetch = async (search: string) => {
 
     const data = await res.json();
 
-    console.log("fetch", data);
+    // console.log("fetch", data);
+    // const formattedData = {
+    //   jumia: {
+    //     items: data.jumia, // Adjust this based on your API response structure
+    //   },
+    //   konga: {
+    //     elements: data.konga, // Adjust this based on your API response structure
+    //   },
+    //   jiji: {
+    //     products: data.jiji, // Adjust this based on your API response structure
+    //   },
+    // };
 
     return data;
   } catch (error) {

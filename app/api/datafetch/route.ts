@@ -3,6 +3,8 @@ import puppeteer from "puppeteer";
 import Bottleneck from "bottleneck";
 
 async function KongaScrape(search: string | null) {
+  const searchQuery = search || "";
+
   const browser = await puppeteer.launch({
     headless: "new",
     defaultViewport: null,
@@ -22,7 +24,7 @@ async function KongaScrape(search: string | null) {
   try {
     await page.waitForSelector(".f6ed2_25oVd div input", { visible: true });
 
-    await page.type(".f6ed2_25oVd div input", search, { delay: 10 });
+    await page.type(".f6ed2_25oVd div input", searchQuery, { delay: 10 });
 
     const button = await page.waitForSelector(".f6ed2_25oVd .fdd83_39Iap", {
       visible: true,
@@ -44,14 +46,27 @@ async function KongaScrape(search: string | null) {
       (element) => {
         return element.slice(0, 5).map((ele) => {
           return {
-            list: ele.querySelector("div > div > a")?.href as string,
-            image: ele.querySelector("._7e903_3FsI6 a picture img")
-              ?.src as string,
-            listName: ele.querySelector("._4941f_1HCZm a div h3")
-              ?.innerText as string,
-            listPrice: ele.querySelector(
-              "._4941f_1HCZm a div:nth-child(2) div span"
-            )?.innerText as string,
+            list:
+              (ele.querySelector("div > div > a") as HTMLAnchorElement)?.href ||
+              "",
+
+            image:
+              (
+                ele.querySelector(
+                  "._7e903_3FsI6 a picture img"
+                ) as HTMLImageElement
+              )?.src || "",
+
+            listName:
+              (ele.querySelector("._4941f_1HCZm a div h3") as HTMLDivElement)
+                ?.innerText || "",
+
+            listPrice:
+              (
+                ele.querySelector(
+                  "._4941f_1HCZm a div:nth-child(2) div span"
+                ) as HTMLSpanElement
+              )?.innerText || "",
           };
         });
       }
@@ -60,18 +75,21 @@ async function KongaScrape(search: string | null) {
     // console.log(elements);
     await browser.close();
 
-    if (elements.length < 0) {
+    if (elements.length === 0) {
       return `No result found`;
     }
 
     return { elements };
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     await browser.close();
+    return { error: error.message };
   }
 }
 
 async function JumiaScrape(search: string | null) {
+  const searchQuery = search || "";
+
   const browser = await puppeteer.launch({
     headless: "new",
     defaultViewport: null,
@@ -93,7 +111,7 @@ async function JumiaScrape(search: string | null) {
   try {
     await page.waitForSelector("#search .find input", { visible: true });
 
-    await page.type("#search .find input", search, { delay: 10 });
+    await page.type("#search .find input", searchQuery, { delay: 10 });
 
     const button = await page.waitForSelector(
       "#search button.btn._prim._md.-mls.-fsh0",
@@ -114,28 +132,37 @@ async function JumiaScrape(search: string | null) {
     const items = await page.$$eval(".card.-fh div article a", (item) => {
       return item.slice(0, 5).map((itemx) => {
         return {
-          itemLink: itemx.href as string,
-          image: itemx.querySelector("div:first-child img")?.src as string,
-          itemName: itemx.querySelector(".info h3")?.innerText as string,
-          itemPrice: itemx.querySelector(".info .prc")?.innerText as string,
+          itemLink: itemx.href || ("" as string),
+          image:
+            (itemx.querySelector("div:first-child img") as HTMLImageElement)
+              ?.src || "",
+          itemName:
+            (itemx.querySelector(".info h3") as HTMLDivElement)?.innerText ||
+            "",
+          itemPrice:
+            (itemx.querySelector(".info .prc") as HTMLDivElement)?.innerText ||
+            "",
         };
       });
     });
 
     await browser.close();
 
-    if (items.length < 0) {
+    if (items.length === 0) {
       return `No result found`;
     }
 
     return { items };
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     await browser.close();
+    return { error: error.message };
   }
 }
 
 async function JijiScrape(search: string | null) {
+  const searchQuery = search || "";
+
   const browser = await puppeteer.launch({
     headless: "new",
     defaultViewport: null,
@@ -159,7 +186,7 @@ async function JijiScrape(search: string | null) {
 
     await page.type(
       ".col-xs-12.b-main-page-header__search-wrapper .fw-search.fw-search--left-button.search-with-suggestions.fw-search--rounded.fw-search--size-large.search-with-suggestions--options-hidden .multiselect .multiselect__tags input",
-      search,
+      searchQuery,
       { delay: 100 }
     );
 
@@ -184,33 +211,44 @@ async function JijiScrape(search: string | null) {
       (product) => {
         return product.slice(0, 5).map((item) => {
           return {
-            link: item.querySelector("a")?.href as string,
-            image: item.querySelector(
-              "a div:first-child div:first-child picture img"
-            )?.src as string,
-            productPrice: item.querySelector(
-              "a div:nth-child(2) div div:first-child .qa-advert-price"
-            )?.innerText as string,
-            productName: item.querySelector(
-              "a div:nth-child(2) div div:nth-child(2) .b-advert-title-inner.qa-advert-title.b-advert-title-inner--div "
-            )?.innerText as string,
+            link: item.querySelector("a")?.href || ("" as string),
+            image:
+              (
+                item.querySelector(
+                  "a div:first-child div:first-child picture img"
+                ) as HTMLImageElement
+              )?.src || "",
+
+            productPrice: (
+              item.querySelector(
+                "a div:nth-child(2) div div:first-child .qa-advert-price"
+              ) as HTMLDivElement
+            )?.innerText,
+
+            productName:
+              (
+                item.querySelector(
+                  "a div:nth-child(2) div div:nth-child(2) .b-advert-title-inner.qa-advert-title.b-advert-title-inner--div "
+                ) as HTMLDivElement
+              )?.innerText || "",
           };
         });
       }
     );
 
-    console.log(products);
+    //console.log(products);
 
     await browser.close();
 
-    if (products.length < 0) {
+    if (products.length === 0) {
       return "No product found";
     }
 
     return { products };
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     await browser.close();
+    return { error: error.message };
   }
 }
 

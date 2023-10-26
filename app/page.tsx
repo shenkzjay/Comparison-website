@@ -5,18 +5,57 @@ import Card from "@/components/cards";
 
 export default function Home() {
   const [input, setInput] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Data>({
+    konga: { elements: [] },
+    jumia: { items: [] },
+    jiji: { products: [] },
+  });
   const [isloading, setIsLoading] = useState<boolean>(false);
+
+  interface Jiji {
+    products: ProductArray[];
+  }
+
+  interface Konga {
+    elements: ElementArray[];
+  }
+
+  interface Jumia {
+    items: ItemsArray[];
+  }
+
+  interface ProductArray {
+    link: string;
+    image: string;
+    productName: string;
+    productPrice: string;
+  }
+
+  interface ElementArray {
+    list: string;
+    image: string;
+    listName: string;
+    listPrice: string;
+  }
+
+  interface ItemsArray {
+    itemLink: string;
+    image: string;
+    itemName: string;
+    itemPrice: string;
+  }
+
+  interface Data {
+    konga: Konga;
+    jumia: Jumia;
+    jiji: Jiji;
+  }
 
   console.log("load", isloading);
 
   const [error, setError] = useState<boolean>(false);
 
   console.log("error", error);
-
-  const search = {
-    input,
-  };
 
   useEffect(() => {
     if (sessionStorage.length > 0) {
@@ -34,11 +73,13 @@ export default function Home() {
       setIsLoading(true);
       setError(false);
 
-      const data: any = await DataFetch(input);
+      const data: Data = await DataFetch(input);
+
+      console.log("fetchdata", data);
 
       setData(data);
 
-      if (data && !data.error) {
+      if (data && Object.keys(data).length > 0) {
         setIsLoading(false);
         setError(false);
         sessionStorage.setItem("data", JSON.stringify(data));
@@ -61,7 +102,7 @@ export default function Home() {
 
   const jiji = data && data?.jiji?.products;
 
-  console.log("jumia", konga);
+  console.log("konga", konga);
 
   console.log("jumia", jumia);
 
@@ -105,7 +146,7 @@ export default function Home() {
         </div>
       ) : error ? (
         <>Error</>
-      ) : data && data.length <= 0 ? (
+      ) : data && Object.keys(data).length <= 0 ? (
         <div className="flex justify-center pt-40">No search result yet</div>
       ) : (
         <section className="flex flex-wrap gap-10 justify-center mt-20">
@@ -118,7 +159,7 @@ export default function Home() {
                 alt="jumia logo"
               />
             </div>
-            {jumia &&
+            {jumia && Array.isArray(jumia) && jumia.length > 0 ? (
               jumia.map((product, index) => (
                 <div
                   key={index}
@@ -134,7 +175,10 @@ export default function Home() {
 
                   {/* <Card name="iphone" image="tatat" price="12313" link="asjdjlsj" /> */}
                 </div>
-              ))}
+              ))
+            ) : (
+              <div>No result found</div>
+            )}
           </div>
 
           <div className="w-[30%]">
@@ -146,7 +190,8 @@ export default function Home() {
                 alt="konga logo"
               />
             </div>
-            {konga &&
+
+            {konga && Array.isArray(konga) && konga.length > 0 ? (
               konga.map((products, index) => (
                 <div
                   key={index}
@@ -160,7 +205,10 @@ export default function Home() {
                     color="bg-pink-200"
                   />
                 </div>
-              ))}
+              ))
+            ) : (
+              <div>No result found</div>
+            )}
           </div>
 
           <div className="w-[30%]">
@@ -173,7 +221,7 @@ export default function Home() {
                 className="object-contain w-[100px] h-[50px]"
               />
             </div>
-            {jiji &&
+            {jiji && Array.isArray(jiji) && jiji.length > 0 ? (
               jiji.map((product, index) => (
                 <div key={index} className="bg-green-100 mb-4 rounded-[10px]">
                   <Card
@@ -184,7 +232,10 @@ export default function Home() {
                     color="bg-green-200"
                   />
                 </div>
-              ))}
+              ))
+            ) : (
+              <div>No result found</div>
+            )}
           </div>
         </section>
       )}
