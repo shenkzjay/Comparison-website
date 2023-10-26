@@ -36,10 +36,10 @@ async function KongaScrape(search: string | null) {
 
     await page.waitForNavigation();
 
-    // await new Promise((resolve) => setTimeout(resolve, 3000)),
-    await page.waitForSelector("._588b5_3MtNs section ul li", {
-      visible: true,
-    });
+    await new Promise((resolve) => setTimeout(resolve, 3000)),
+      await page.waitForSelector("._588b5_3MtNs section ul li", {
+        visible: true,
+      });
 
     const elements = await page.$$eval(
       "._588b5_3MtNs section ul li",
@@ -83,7 +83,7 @@ async function KongaScrape(search: string | null) {
   } catch (error: any) {
     console.error(error);
     await browser.close();
-    return { error: error.message };
+    // return { error: error.message };
   }
 }
 

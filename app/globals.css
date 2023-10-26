@@ -7,3 +7,135 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
+/**LOOOAAADDDIIINNNG**/
+
+.cup {
+  width: 10rem;
+  height: 8rem;
+  margin: 0 auto;
+  position: relative;
+  background: radial-gradient(ellipse, black 10%, transparent 50.5%) 0% 74% /
+    9.5rem 1rem;
+  background-repeat: no-repeat;
+}
+
+.cup::after {
+  --red: crimson;
+  --eyeball-color: black;
+  content: "";
+  width: 10rem;
+  height: 8rem;
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: radial-gradient(
+        ellipse at top,
+        transparent 45%,
+        firebrick 45%,
+        firebrick 50%,
+        transparent 50.5%
+      )
+      42% 30% / 6.5rem 0.5rem,
+    radial-gradient(ellipse, black 50%, transparent 50.5%) 42% 26% / 5.5rem
+      0.5rem,
+    radial-gradient(ellipse, firebrick 50%, transparent 50.5%) 42% 23% / 6.5rem
+      0.9rem,
+    linear-gradient(red, red) 45% 46% / 2rem 3.6rem,
+    radial-gradient(ellipse at 0px 0px, red 50%, transparent 50.5%) 65% 68% /
+      2rem 5rem,
+    radial-gradient(ellipse at 0px 0px, crimson 50%, transparent 50.5%) 70% 68% /
+      2rem 5rem,
+    radial-gradient(ellipse at 40px 10px, red 50%, transparent 50.5%) 20% 68% /
+      2rem 5rem,
+    radial-gradient(
+        ellipse at 0px 50px,
+        transparent 40%,
+        red 40%,
+        red 50%,
+        transparent 50.5%
+      )
+      35% 0% / 1.5rem 4rem,
+    radial-gradient(
+        ellipse at 0px 50px,
+        transparent 40%,
+        red 40%,
+        red 50%,
+        transparent 50.5%
+      )
+      45% 0% / 1.5rem 4rem,
+    radial-gradient(
+        ellipse at 0px 50px,
+        transparent 40%,
+        red 40%,
+        red 50%,
+        transparent 50.5%
+      )
+      55% 0% / 1.5rem 4rem,
+    radial-gradient(
+        ellipse at left,
+        transparent 40%,
+        red 40%,
+        red 50%,
+        transparent 50.5%
+      )
+      79% 31% / 2rem 3rem;
+  background-repeat: no-repeat;
+  animation: bounceIn 2s infinite 2s;
+}
+
+.cup::before {
+  width: 10rem;
+  height: 8rem;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: radial-gradient(
+        ellipse,
+        var(--eyeball-color) 50%,
+        transparent 50.5%
+      )
+      60% 40% / 1rem 1rem,
+    radial-gradient(ellipse at top, black 50%, transparent 50.5%) 47% 62% / 2rem
+      1rem,
+    radial-gradient(ellipse, var(--eyeball-color) 50%, transparent 50.5%) 33%
+      40% / 1rem 1rem;
+  background-repeat: no-repeat;
+  content: "";
+  animation: blink 1s steps(5, start) alternate forwards,
+    bounceIn 2s infinite 2s;
+  z-index: 9;
+}
+
+@keyframes bounceIn {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes blink {
+  0% {
+    --eyeball-color: red;
+  }
+  50% {
+    --eyeball-color: black;
+  }
+  75% {
+    --eyeball-color: red;
+  }
+  100% {
+    --eyeball-color: black;
+  }
+}

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { DataFetch } from "./datafetch";
 import Card from "@/components/cards";
+import Loading from "@/components/loading";
 
 export default function Home() {
   const [input, setInput] = useState("");
@@ -11,6 +12,8 @@ export default function Home() {
     jiji: { products: [] },
   });
   const [isloading, setIsLoading] = useState<boolean>(false);
+
+  const [isSearched, setIsSearched] = useState<boolean>(false);
 
   interface Jiji {
     products: ProductArray[];
@@ -61,9 +64,15 @@ export default function Home() {
     if (sessionStorage.length > 0) {
       const stale_data = sessionStorage.getItem("data");
 
+      const _isSearched = sessionStorage.getItem("isSearched");
+
       if (stale_data) {
         const parseData = JSON.parse(stale_data);
         setData(parseData);
+      }
+
+      if (_isSearched === "true") {
+        setIsSearched(true);
       }
     }
   }, []);
@@ -78,6 +87,10 @@ export default function Home() {
       console.log("fetchdata", data);
 
       setData(data);
+
+      setIsSearched(true);
+
+      sessionStorage.setItem("isSearched", "true");
 
       if (data && Object.keys(data).length > 0) {
         setIsLoading(false);
@@ -107,15 +120,15 @@ export default function Home() {
   console.log("jumia", jumia);
 
   return (
-    <main className=" fle flex-col justify-center w-[90vw] h-screen mx-auto">
+    <main className="  w-[90vw] h-screen mx-auto">
       <div className="flex flex-col text-center space-y-6 pt-20">
         <div className="flex flex-col">
-          <h2 className="font-bold text-[56px] mb-2">
-            Check and Compare Prices
+          <h2 className="font-bold text-[56px] mb-2 after:content-['🇳🇬'] after:ml-5">
+            eCommerce Price Checker
           </h2>
           <p className="">
-            Compare prices for the items you wish to purchase across
-            Nigeria&apos;s top ecommerce platforms.
+            Check and compare prices for items across Nigeria&apos;s top
+            ecommerce platforms.
           </p>
         </div>
 
@@ -140,16 +153,23 @@ export default function Home() {
       </div>
 
       {isloading ? (
-        <div className="flex justify-center pt-40">
-          <p>Loading...</p>
+        <div className="flex flex-col justify-center items-center pt-32">
+          <div>
+            <Loading />
+          </div>
           <p>Grab a cup of coffee while we fetch the latest prices for you.</p>
         </div>
       ) : error ? (
-        <>Error</>
-      ) : data && Object.keys(data).length <= 0 ? (
-        <div className="flex justify-center pt-40">No search result yet</div>
+        <div className="flex justify-center items-center pt-40">
+          An error has occured. Please check your network connection and try
+          again later
+        </div>
+      ) : !isSearched ? (
+        <div className="flex justify-center pt-40">
+          Your search results will be displayed here..
+        </div>
       ) : (
-        <section className="flex flex-wrap gap-10 justify-center mt-20">
+        <section className="flex flex-wrap gap-10 justify-center mt-20 pb-20">
           <div className="w-[30%]">
             <div className="flex py-5 px-2 justify-center">
               <img
@@ -223,7 +243,10 @@ export default function Home() {
             </div>
             {jiji && Array.isArray(jiji) && jiji.length > 0 ? (
               jiji.map((product, index) => (
-                <div key={index} className="bg-green-100 mb-4 rounded-[10px]">
+                <div
+                  key={index}
+                  className="bg-green-100 mb-4 rounded-[10px] hover:border hover:border-green-200"
+                >
                   <Card
                     name={product.productName}
                     image={product.image}
