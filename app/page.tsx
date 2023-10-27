@@ -165,7 +165,7 @@ export default function Home() {
         </div>
       ) : !isSearched ? (
         <div className="flex justify-center pt-40">
-          Your search results will be displayed here..
+          Your search results will display here..
         </div>
       ) : (
         <section className="flex flex-wrap gap-10 justify-center mt-20 pb-20">
