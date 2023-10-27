@@ -161,8 +161,7 @@ export default function Home() {
         </div>
       ) : error ? (
         <div className="flex justify-center items-center pt-40">
-          An error has occured. Please check your network connection and try
-          again later
+          An error has occured. Please check your connection and try again later
         </div>
       ) : !isSearched ? (
         <div className="flex justify-center pt-40">
@@ -197,7 +196,9 @@ export default function Home() {
                 </div>
               ))
             ) : (
-              <div>No result found</div>
+              <div className="flex justify-center items-center">
+                No result found
+              </div>
             )}
           </div>
 
@@ -227,7 +228,9 @@ export default function Home() {
                 </div>
               ))
             ) : (
-              <div>No result found</div>
+              <div className="flex justify-center items-center">
+                No result found
+              </div>
             )}
           </div>
 
@@ -257,7 +260,9 @@ export default function Home() {
                 </div>
               ))
             ) : (
-              <div>No result found</div>
+              <div className="flex justify-center items-center">
+                No result found
+              </div>
             )}
           </div>
         </section>
