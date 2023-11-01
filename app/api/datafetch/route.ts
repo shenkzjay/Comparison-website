@@ -12,6 +12,16 @@ async function KongaScrape(search: string | null) {
       "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
   });
 
+  // const browser = await puppeteer.launch({
+  //   executablePath: "/usr/bin/google-chrome",
+  //   args: [
+  //     "--disable-gpu",
+  //     "--disable-dev-shm-usage",
+  //     "--disable-setuid-sandbox",
+  //     "--no-sandbox",
+  //   ],
+  // });
+
   const page = await browser.newPage();
 
   // Set a custom user agent
@@ -97,6 +107,16 @@ async function JumiaScrape(search: string | null) {
       "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
   });
 
+  // const browser = await puppeteer.launch({
+  //   executablePath: "/usr/bin/google-chrome",
+  //   args: [
+  //     "--disable-gpu",
+  //     "--disable-dev-shm-usage",
+  //     "--disable-setuid-sandbox",
+  //     "--no-sandbox",
+  //   ],
+  // });
+
   const page = await browser.newPage();
 
   // Set a custom user agent
@@ -162,6 +182,16 @@ async function JumiaScrape(search: string | null) {
 
 async function JijiScrape(search: string | null) {
   const searchQuery = search || "";
+
+  // const browser = await puppeteer.launch({
+  //   executablePath: "/usr/bin/google-chrome",
+  //   args: [
+  //     "--disable-gpu",
+  //     "--disable-dev-shm-usage",
+  //     "--disable-setuid-sandbox",
+  //     "--no-sandbox",
+  //   ],
+  // });
 
   const browser = await puppeteer.launch({
     headless: "new",

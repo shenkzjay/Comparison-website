@@ -6,9 +6,12 @@ export const DataFetch = async (search: string) => {
   console.log(search);
 
   try {
-    const res = await fetch(`/api/datafetch?search=${search}`, {
-      method: "GET",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_VERCEL_ENV}/api/datafetch?search=${search}`,
+      {
+        method: "GET",
+      }
+    );
 
     if (!res.ok) {
       throw new Error(
