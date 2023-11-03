@@ -30,10 +30,6 @@ RUN set -x \
     && apk add --no-cache \
     udev \
     ttf-freefont \
-    nss \
-    freetype \
-    harfbuzz \
-    ca-certificates \
     chromium@118.0.5993.70
 
 
