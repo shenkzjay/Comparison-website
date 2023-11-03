@@ -19,6 +19,7 @@ async function KongaScrape(search: string | null) {
   const browser = await puppeteer.launch({
     headless: "new",
     defaultViewport: null,
+    timeout: 60000,
     executablePath,
     args: [
       "--single-process",

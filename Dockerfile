@@ -30,6 +30,10 @@ RUN set -x \
     && apk add --no-cache \
     udev \
     ttf-freefont \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates \
     chromium
 
 
