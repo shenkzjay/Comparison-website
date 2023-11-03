@@ -34,7 +34,7 @@ RUN set -x \
     freetype \
     harfbuzz \
     ca-certificates \
-    chromium
+    chromium@118.0.5993.70
 
 
 WORKDIR /app
