@@ -5,13 +5,28 @@ import Bottleneck from "bottleneck";
 async function KongaScrape(search: string | null) {
   const searchQuery = search || "";
 
+  let executablePath;
+
+  // Check if running in Docker container (by looking for environment variables)
+  if (process.env.NODE_ENV === "production") {
+    executablePath = process.env.PUPPETEER_EXCUTABLE_PATH; // Use the Docker environment variable
+  } else {
+    // Running locally - provide the Chromium executable path on your local machine
+    executablePath =
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; // Replace with the actual path on your machine
+  }
+
   const browser = await puppeteer.launch({
     headless: "new",
     defaultViewport: null,
-    executablePath:
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    executablePath,
+    args: [
+      "--single-process",
+      "--no-zygote",
+      "--disable-setuid-sandbox",
+      "--no-sandbox",
+    ],
   });
-
   // const browser = await puppeteer.launch({
   //   executablePath: "/usr/bin/google-chrome",
   //   args: [
@@ -100,11 +115,27 @@ async function KongaScrape(search: string | null) {
 async function JumiaScrape(search: string | null) {
   const searchQuery = search || "";
 
+  let executablePath;
+
+  // Check if running in Docker container (by looking for environment variables)
+  if (process.env.NODE_ENV === "production") {
+    executablePath = process.env.PUPPETEER_EXCUTABLE_PATH; // Use the Docker environment variable
+  } else {
+    // Running locally - provide the Chromium executable path on your local machine
+    executablePath =
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; // Replace with the actual path on your machine
+  }
+
   const browser = await puppeteer.launch({
     headless: "new",
     defaultViewport: null,
-    executablePath:
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    executablePath,
+    args: [
+      "--single-process",
+      "--no-zygote",
+      "--disable-setuid-sandbox",
+      "--no-sandbox",
+    ],
   });
 
   // const browser = await puppeteer.launch({
@@ -193,11 +224,27 @@ async function JijiScrape(search: string | null) {
   //   ],
   // });
 
+  let executablePath;
+
+  // Check if running in Docker container (by looking for environment variables)
+  if (process.env.NODE_ENV === "production") {
+    executablePath = process.env.PUPPETEER_EXCUTABLE_PATH; // Use the Docker environment variable
+  } else {
+    // Running locally - provide the Chromium executable path on your local machine
+    executablePath =
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; // Replace with the actual path on your machine
+  }
+
   const browser = await puppeteer.launch({
     headless: "new",
     defaultViewport: null,
-    executablePath:
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    executablePath,
+    args: [
+      "--single-process",
+      "--no-zygote",
+      "--disable-setuid-sandbox",
+      "--no-sandbox",
+    ],
   });
 
   const page = await browser.newPage();

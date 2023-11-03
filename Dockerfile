@@ -1,26 +1,14 @@
-FROM node:18-alpine
+FROM ghcr.io/puppeteer/puppeteer:21.4.0
 
-ENV CHROME_BIN="/usr/bin/chromium-browser" \
-    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
-
-
-RUN set -x \
-    && apk update \
-    && apk upgrade \
-    && apk add --no-cache \
-    udev \
-    ttf-freefont \
-    chromium
-
-
-WORKDIR /app/pages.tsx
+ENV PUPPETEER_EXECUTABLE_PATH=usr/bin/google-chrome-stable \
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ 
+WORKDIR /usr/app
 
 COPY ./package*.json ./
 
-RUN npm install
+RUN npm ci
 
-COPY ./ ./
-
-RUN npm run build
+COPY . .
 
 CMD ["npm", "start"]
