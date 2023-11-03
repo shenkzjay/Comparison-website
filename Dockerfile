@@ -20,7 +20,7 @@
 
 FROM node:18-alpine
 
-ENV CHROME_BIN="/usr/bin/chromium-browser" \
+ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser" \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
 
 
