@@ -21,12 +21,7 @@ async function KongaScrape(search: string | null) {
     defaultViewport: null,
     timeout: 60000,
     executablePath,
-    args: [
-      "--single-process",
-      "--no-zygote",
-      "--disable-setuid-sandbox",
-      "--no-sandbox",
-    ],
+    args: ["--disable-setuid-sandbox", "--no-sandbox"],
   });
   // const browser = await puppeteer.launch({
   //   executablePath: "/usr/bin/google-chrome",
@@ -46,6 +41,8 @@ async function KongaScrape(search: string | null) {
   await page.setUserAgent(userAgent);
 
   await page.goto("https://www.konga.com/", { waitUntil: "networkidle2" });
+
+  await page.waitForNavigation();
 
   try {
     await page.waitForSelector(".f6ed2_25oVd div input", { visible: true });
