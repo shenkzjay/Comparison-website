@@ -30,7 +30,7 @@ RUN set -x \
     && apk add --no-cache \
     udev \
     ttf-freefont \
-    chromium@117.0.5938.62
+    chromium
 
 
 WORKDIR /app
