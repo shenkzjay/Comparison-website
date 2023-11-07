@@ -161,16 +161,11 @@ export default function Home() {
       </div>
 
       {isloading ? (
-        <div
-          className="flex flex-col justify-center items-center pt-32"
-          data-testid="loading"
-        >
+        <div className="flex flex-col justify-center items-center pt-32">
           <div>
             <Loading />
           </div>
-          <p data-testid="loading">
-            Grab a cup of coffee while we fetch the latest prices for you.
-          </p>
+          <p>Grab a cup of coffee while we fetch the latest prices for you.</p>
         </div>
       ) : error ? (
         <div className="flex justify-center items-center pt-40">
