@@ -12,6 +12,7 @@ export default function Home() {
     jiji: { products: [] },
   });
   const [isloading, setIsLoading] = useState<boolean>(false);
+  console.log(isloading);
 
   const [isSearched, setIsSearched] = useState<boolean>(false);
 
@@ -79,6 +80,9 @@ export default function Home() {
 
   const handleSubmit = async () => {
     try {
+      if (!input) {
+        return alert("please input value is required");
+      }
       setIsLoading(true);
       setError(false);
 
@@ -139,25 +143,34 @@ export default function Home() {
             onChange={(e) => setInput(e.target.value)}
             className="border border-slate-300 outline-1 outline-slate-300 w-1/3 px-4 py-3 rounded-[10px]"
             placeholder="Enter search keyword here..."
+            required
+            aria-label="search-input"
           />
         </div>
 
-        <div>
-          <button
-            onClick={handleSubmit}
-            className="bg-cyan-600 px-4 py-3 rounded-[10px] font-bold text-white"
-          >
-            Get prices
-          </button>
-        </div>
+        {!isloading && (
+          <div>
+            <button
+              onClick={handleSubmit}
+              className="bg-cyan-600 px-4 py-3 rounded-[10px] font-bold text-white"
+            >
+              Get prices
+            </button>
+          </div>
+        )}
       </div>
 
       {isloading ? (
-        <div className="flex flex-col justify-center items-center pt-32">
+        <div
+          className="flex flex-col justify-center items-center pt-32"
+          data-testid="loading"
+        >
           <div>
             <Loading />
           </div>
-          <p>Grab a cup of coffee while we fetch the latest prices for you.</p>
+          <p data-testid="loading">
+            Grab a cup of coffee while we fetch the latest prices for you.
+          </p>
         </div>
       ) : error ? (
         <div className="flex justify-center items-center pt-40">
