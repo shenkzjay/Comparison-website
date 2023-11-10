@@ -21,7 +21,8 @@
 FROM node:18-alpine
 
 ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser" \
-    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true" \
+    CHROMIUM_VERSION="117.0.5938.62"
 
 
 RUN set -x \
@@ -30,7 +31,7 @@ RUN set -x \
     && apk add --no-cache \
     udev \
     ttf-freefont \
-    chromium
+    chromium=${CHROMIUM_VERSION}
 
 
 WORKDIR /app
