@@ -18,7 +18,7 @@
 
 
 
-FROM node:14-alpine3.14
+FROM node:18-alpine
 
 ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser" \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
