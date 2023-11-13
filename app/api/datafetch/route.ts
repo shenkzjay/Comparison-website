@@ -19,7 +19,7 @@ async function KongaScrape(search: string | null) {
   const browser = await puppeteer.launch({
     headless: "new",
     defaultViewport: null,
-    timeout: 60000,
+    timeout: 0,
     executablePath,
     args: ["--disable-setuid-sandbox", "--no-sandbox"],
   });
