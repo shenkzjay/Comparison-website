@@ -165,7 +165,9 @@ export default function Home() {
           <div>
             <Loading />
           </div>
-          <p>Grab a cup of coffee while we fetch the latest prices for you.</p>
+          <p>
+            Grab a cup of coffee while we fetch the latest prices for you...
+          </p>
         </div>
       ) : error ? (
         <div className="flex justify-center items-center pt-40">
