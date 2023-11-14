@@ -18,7 +18,7 @@
 
 
 
-FROM node:18-alpine
+FROM browserless/chrome:latest
 
 ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser" \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
@@ -33,17 +33,7 @@ RUN set -x \
     chromium
 
 
-RUN npm init -y && \
-npm i puppeteer && \
-addgroup -S pptruser && adduser -S -G pptruser -u 1001 pptruser \
-&& mkdir -p /home/pptruser/Downloads \
-&& chown -R pptruser:pptruser /home/pptruser
-
-
 WORKDIR /app
-
-# Switch to the non-privileged user
-USER pptruser
 
 COPY ./package*.json ./
 
