@@ -29,7 +29,7 @@ COPY ./package*.json ./
 
 USER root  # Switch to root user temporarily
 
-RUN chown -R root:root /app  # Change ownership to root
+RUN chown -R 0:0 /app  # Change ownership to root
 
 USER node  # Switch back to the default user
 
