@@ -37,6 +37,8 @@ WORKDIR /app
 
 COPY ./package*.json ./
 
+RUN chown -R node:node /app
+
 RUN npm install
 
 COPY ./ ./
