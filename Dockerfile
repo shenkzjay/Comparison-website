@@ -18,20 +18,24 @@
 
 
 
-FROM browserless/chrome:latest
+FROM node:18-alpine
 
 ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser" \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
 
+
+RUN set -x \
+    && apk update \
+    && apk upgrade \
+    && apk add --no-cache \
+    udev \
+    ttf-freefont \
+    chromium
+
+
 WORKDIR /app
 
 COPY ./package*.json ./
-
-USER root  # Switch to root user temporarily
-
-RUN chown -R 0:0 /app  # Change ownership to root
-
-USER node  # Switch back to the default user
 
 RUN npm install
 
