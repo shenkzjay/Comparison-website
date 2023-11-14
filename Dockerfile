@@ -24,13 +24,13 @@ ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser" \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
 
 
-RUN set -x \
-    && apk update \
-    && apk upgrade \
-    && apk add --no-cache \
-    udev \
-    ttf-freefont \
-    chromium
+# RUN set -x \
+#     && apk update \
+#     && apk upgrade \
+#     && apk add --no-cache \
+#     udev \
+#     ttf-freefont \
+
 
 
 WORKDIR /app
