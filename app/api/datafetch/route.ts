@@ -19,9 +19,14 @@ async function KongaScrape(search: string | null) {
   const browser = await puppeteer.launch({
     headless: "new",
     defaultViewport: null,
-    timeout: 0,
+    timeout: 120000,
     executablePath,
-    args: ["--disable-setuid-sandbox", "--no-sandbox"],
+    args: [
+      "--single-process",
+      "--no-zygote",
+      "--disable-setuid-sandbox",
+      "--no-sandbox",
+    ],
   });
   // const browser = await puppeteer.launch({
   //   executablePath: "/usr/bin/google-chrome",
@@ -128,6 +133,7 @@ async function JumiaScrape(search: string | null) {
     headless: "new",
     defaultViewport: null,
     executablePath,
+    timeout: 120000,
     args: [
       "--single-process",
       "--no-zygote",
@@ -236,6 +242,7 @@ async function JijiScrape(search: string | null) {
   const browser = await puppeteer.launch({
     headless: "new",
     defaultViewport: null,
+    timeout: 120000,
     executablePath,
     args: [
       "--single-process",
