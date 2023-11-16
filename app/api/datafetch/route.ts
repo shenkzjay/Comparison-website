@@ -45,7 +45,10 @@ async function KongaScrape(search: string | null) {
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
   await page.setUserAgent(userAgent);
 
-  await page.goto("https://www.konga.com/", { waitUntil: "networkidle2" });
+  await page.goto("https://www.konga.com/", {
+    waitUntil: "networkidle2",
+    timeout: 120000,
+  });
 
   await page.waitForNavigation();
 
@@ -161,7 +164,10 @@ async function JumiaScrape(search: string | null) {
 
   // await page.setViewport({ width: 1080, height: 1024 });
 
-  await page.goto("https://www.jumia.com.ng/", { waitUntil: "networkidle2" });
+  await page.goto("https://www.jumia.com.ng/", {
+    waitUntil: "networkidle2",
+    timeout: 120000,
+  });
 
   try {
     await page.waitForSelector("#search .find input", { visible: true });
@@ -259,7 +265,10 @@ async function JijiScrape(search: string | null) {
 
   await page.setUserAgent(userAgent);
 
-  await page.goto("https://jiji.ng/", { waitUntil: "networkidle2" });
+  await page.goto("https://jiji.ng/", {
+    waitUntil: "networkidle2",
+    timeout: 120000,
+  });
 
   try {
     await page.waitForSelector(
