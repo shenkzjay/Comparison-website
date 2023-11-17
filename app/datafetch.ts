@@ -18,19 +18,6 @@ export const DataFetch = async (search: string) => {
 
     const data = await res.json();
 
-    // console.log("fetch", data);
-    // const formattedData = {
-    //   jumia: {
-    //     items: data.jumia, // Adjust this based on your API response structure
-    //   },
-    //   konga: {
-    //     elements: data.konga, // Adjust this based on your API response structure
-    //   },
-    //   jiji: {
-    //     products: data.jiji, // Adjust this based on your API response structure
-    //   },
-    // };
-
     return data;
   } catch (error) {
     console.error(error);
