@@ -15,7 +15,3 @@ The One-Stop Shop is a web application designed to streamline the online shoppin
 - **Next.js:** A React-based web framework for building efficient and scalable web applications.
 - **Tailwind CSS:** A utility-first CSS framework for rapid UI development.
 - **Puppeteer:** A Node library that provides a high-level API to control headless browsers.
-
-## Getting Started
-
-Follow these steps to get the One-Stop Shop up and running on your local machine:
