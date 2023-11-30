@@ -1,38 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 import Bottleneck from "bottleneck";
+import { Browser } from "puppeteer";
 
-async function KongaScrape(search: string | null) {
+async function KongaScrape(search: string | null, browser: Browser) {
   const searchQuery = search || "";
 
-  let executablePath;
+  // let executablePath;
 
   // Check if running in Docker container (by looking for environment variables)
-  if (process.env.NODE_ENV === "production") {
-    executablePath = process.env.PUPPETEER_EXCUTABLE_PATH; // Use the Docker environment variable
-  } else {
-    // Running locally - provide the Chromium executable path on your local machine
-    executablePath =
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; // Replace with the actual path on your machine
-  }
+  // if (process.env.NODE_ENV === "production") {
+  //   executablePath = process.env.PUPPETEER_EXCUTABLE_PATH;
+  // } else {
 
-  const browser = await puppeteer.launch({
-    headless: "new",
-    defaultViewport: null,
-    timeout: 120000,
-    executablePath,
-    args: [
-      "--single-process",
-      "--no-zygote",
-      "--disable-setuid-sandbox",
-      "--no-sandbox",
-    ],
-  });
+  //   executablePath =
+  //     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  // }
+
   // const browser = await puppeteer.launch({
-  //   executablePath: "/usr/bin/google-chrome",
+  //   headless: "new",
+  //   defaultViewport: null,
+  //   timeout: 120000,
+  //   executablePath,
   //   args: [
-  //     "--disable-gpu",
-  //     "--disable-dev-shm-usage",
+  //     "--single-process",
+  //     "--no-zygote",
   //     "--disable-setuid-sandbox",
   //     "--no-sandbox",
   //   ],
@@ -104,7 +96,7 @@ async function KongaScrape(search: string | null) {
     );
 
     // console.log(elements);
-    await browser.close();
+    // await browser.close();
 
     if (elements.length === 0) {
       return `No result found`;
@@ -113,43 +105,33 @@ async function KongaScrape(search: string | null) {
     return { elements };
   } catch (error: any) {
     console.error(error);
-    await browser.close();
+
     // return { error: error.message };
   }
 }
 
-async function JumiaScrape(search: string | null) {
+async function JumiaScrape(search: string | null, browser: Browser) {
   const searchQuery = search || "";
 
-  let executablePath;
+  // let executablePath;
 
   // Check if running in Docker container (by looking for environment variables)
-  if (process.env.NODE_ENV === "production") {
-    executablePath = process.env.PUPPETEER_EXCUTABLE_PATH; // Use the Docker environment variable
-  } else {
-    // Running locally - provide the Chromium executable path on your local machine
-    executablePath =
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; // Replace with the actual path on your machine
-  }
+  // if (process.env.NODE_ENV === "production") {
+  //   executablePath = process.env.PUPPETEER_EXCUTABLE_PATH;
+  // } else {
 
-  const browser = await puppeteer.launch({
-    headless: "new",
-    defaultViewport: null,
-    executablePath,
-    timeout: 120000,
-    args: [
-      "--single-process",
-      "--no-zygote",
-      "--disable-setuid-sandbox",
-      "--no-sandbox",
-    ],
-  });
+  //   executablePath =
+  //     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  // }
 
   // const browser = await puppeteer.launch({
-  //   executablePath: "/usr/bin/google-chrome",
+  //   headless: "new",
+  //   defaultViewport: null,
+  //   executablePath,
+  //   timeout: 120000,
   //   args: [
-  //     "--disable-gpu",
-  //     "--disable-dev-shm-usage",
+  //     "--single-process",
+  //     "--no-zygote",
   //     "--disable-setuid-sandbox",
   //     "--no-sandbox",
   //   ],
@@ -207,7 +189,7 @@ async function JumiaScrape(search: string | null) {
       });
     });
 
-    await browser.close();
+    // await browser.close();
 
     if (items.length === 0) {
       return `No result found`;
@@ -216,47 +198,37 @@ async function JumiaScrape(search: string | null) {
     return { items };
   } catch (error: any) {
     console.error(error);
-    await browser.close();
+
     return { error: error.message };
   }
 }
 
-async function JijiScrape(search: string | null) {
+async function JijiScrape(search: string | null, browser: Browser) {
   const searchQuery = search || "";
 
+  // let executablePath;
+
+  // Check if running in Docker container (by looking for environment variables)
+  // if (process.env.NODE_ENV === "production") {
+  //   executablePath = process.env.PUPPETEER_EXCUTABLE_PATH; // Use the Docker environment variable
+  // } else {
+
+  //   executablePath =
+  //     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  // }
+
   // const browser = await puppeteer.launch({
-  //   executablePath: "/usr/bin/google-chrome",
+  //   headless: "new",
+  //   defaultViewport: null,
+  //   timeout: 120000,
+  //   executablePath,
   //   args: [
-  //     "--disable-gpu",
-  //     "--disable-dev-shm-usage",
+  //     "--single-process",
+  //     "--no-zygote",
   //     "--disable-setuid-sandbox",
   //     "--no-sandbox",
   //   ],
   // });
-
-  let executablePath;
-
-  // Check if running in Docker container (by looking for environment variables)
-  if (process.env.NODE_ENV === "production") {
-    executablePath = process.env.PUPPETEER_EXCUTABLE_PATH; // Use the Docker environment variable
-  } else {
-    // Running locally - provide the Chromium executable path on your local machine
-    executablePath =
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; // Replace with the actual path on your machine
-  }
-
-  const browser = await puppeteer.launch({
-    headless: "new",
-    defaultViewport: null,
-    timeout: 120000,
-    executablePath,
-    args: [
-      "--single-process",
-      "--no-zygote",
-      "--disable-setuid-sandbox",
-      "--no-sandbox",
-    ],
-  });
 
   const page = await browser.newPage();
 
@@ -329,7 +301,7 @@ async function JijiScrape(search: string | null) {
 
     //console.log(products);
 
-    await browser.close();
+    // await browser.close();
 
     if (products.length === 0) {
       return "No product found";
@@ -338,7 +310,7 @@ async function JijiScrape(search: string | null) {
     return { products };
   } catch (error: any) {
     console.error(error);
-    await browser.close();
+
     return { error: error.message };
   }
 }
@@ -355,12 +327,38 @@ export async function GET(request: NextRequest) {
 
   console.log(search, query);
 
+  let executablePath;
+
+  // Check if running in Docker container (by looking for environment variables)
+  if (process.env.NODE_ENV === "production") {
+    executablePath = process.env.PUPPETEER_EXCUTABLE_PATH; // Use the Docker environment variable
+  } else {
+    // Running locally - provide the Chromium executable path on your local machine
+    executablePath =
+      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; // Replace with the actual path on your machine
+  }
+
+  const browser = await puppeteer.launch({
+    headless: "new",
+    defaultViewport: null,
+    timeout: 120000,
+    executablePath,
+    args: [
+      "--single-process",
+      "--no-zygote",
+      "--disable-setuid-sandbox",
+      "--no-sandbox",
+    ],
+  });
+
   try {
     const [konga, jumia, jiji] = await Promise.all([
-      limiter.schedule(() => KongaScrape(query)), // Use limiter.schedule
-      limiter.schedule(() => JumiaScrape(query)),
-      limiter.schedule(() => JijiScrape(query)),
+      limiter.schedule(() => KongaScrape(query, browser)), // Use limiter.schedule
+      limiter.schedule(() => JumiaScrape(query, browser)),
+      limiter.schedule(() => JijiScrape(query, browser)),
     ]);
+
+    await browser.close();
 
     const response = { jumia, konga, jiji };
 
@@ -369,8 +367,9 @@ export async function GET(request: NextRequest) {
     const responseBody = JSON.stringify(response);
 
     return new NextResponse(responseBody, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return new NextResponse("An error occurred", { status: 500 });
+    await browser.close();
+    return new NextResponse(error, { status: 500 });
   }
 }
