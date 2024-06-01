@@ -2,32 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+input#query:focus + span {
+  background-color: black;
+  transition: background-color 0.2s ease-in-out;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+input#query:focus {
+  outline: 2px solid black;
+  transform: scale(1.1);
+  animation: focus 0.2s linear forwards;
+  transition: transform 0.2 ease-in-out;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+input#query {
+  outline: none;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:checked + label {
+  background-color: white;
+  border-radius: 15px;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.content-1,
+.content-2,
+.content-3 {
+  display: none;
+}
+
+input#jiji[type="radio"]:checked ~ section > .content-1,
+input#jumia[type="radio"]:checked ~ section > .content-2,
+input#konga[type="radio"]:checked ~ section > .content-3 {
+  display: block;
+}
+
+@keyframes focus {
+  to {
+    transform: scale(1);
   }
 }
