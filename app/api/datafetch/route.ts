@@ -64,36 +64,22 @@ async function KongaScrape(search: string | null, browser: Browser) {
         visible: true,
       });
 
-    const elements = await page.$$eval(
-      "._588b5_3MtNs section ul li",
-      (element) => {
-        return element.slice(0, 5).map((ele) => {
-          return {
-            list:
-              (ele.querySelector("div > div > a") as HTMLAnchorElement)?.href ||
-              "",
+    const elements = await page.$$eval("._588b5_3MtNs section ul li", (element) => {
+      return element.slice(0, 5).map((ele) => {
+        return {
+          list: (ele.querySelector("div > div > a") as HTMLAnchorElement)?.href || "",
 
-            image:
-              (
-                ele.querySelector(
-                  "._7e903_3FsI6 a picture img"
-                ) as HTMLImageElement
-              )?.src || "",
+          image: (ele.querySelector("._7e903_3FsI6 a picture img") as HTMLImageElement)?.src || "",
 
-            listName:
-              (ele.querySelector("._4941f_1HCZm a div h3") as HTMLDivElement)
-                ?.innerText || "",
+          listName:
+            (ele.querySelector("._4941f_1HCZm a div h3") as HTMLDivElement)?.innerText || "",
 
-            listPrice:
-              (
-                ele.querySelector(
-                  "._4941f_1HCZm a div:nth-child(2) div span"
-                ) as HTMLSpanElement
-              )?.innerText || "",
-          };
-        });
-      }
-    );
+          listPrice:
+            (ele.querySelector("._4941f_1HCZm a div:nth-child(2) div span") as HTMLSpanElement)
+              ?.innerText || "",
+        };
+      });
+    });
 
     // console.log(elements);
     // await browser.close();
@@ -156,12 +142,9 @@ async function JumiaScrape(search: string | null, browser: Browser) {
 
     await page.type("#search .find input", searchQuery, { delay: 10 });
 
-    const button = await page.waitForSelector(
-      "#search button.btn._prim._md.-mls.-fsh0",
-      {
-        visible: true,
-      }
-    );
+    const button = await page.waitForSelector("#search button.btn._prim._md.-mls.-fsh0", {
+      visible: true,
+    });
     if (button) {
       await button.click();
     }
@@ -176,15 +159,9 @@ async function JumiaScrape(search: string | null, browser: Browser) {
       return item.slice(0, 5).map((itemx) => {
         return {
           itemLink: itemx.href || ("" as string),
-          image:
-            (itemx.querySelector("div:first-child img") as HTMLImageElement)
-              ?.src || "",
-          itemName:
-            (itemx.querySelector(".info h3") as HTMLDivElement)?.innerText ||
-            "",
-          itemPrice:
-            (itemx.querySelector(".info .prc") as HTMLDivElement)?.innerText ||
-            "",
+          image: (itemx.querySelector("div:first-child img") as HTMLImageElement)?.src || "",
+          itemName: (itemx.querySelector(".info h3") as HTMLDivElement)?.innerText || "",
+          itemPrice: (itemx.querySelector(".info .prc") as HTMLDivElement)?.innerText || "",
         };
       });
     });
@@ -265,9 +242,7 @@ async function JijiScrape(search: string | null, browser: Browser) {
 
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    await page.waitForSelector(
-      ".b-advert-listing.js-advert-listing.qa-advert-listing"
-    );
+    await page.waitForSelector(".b-advert-listing.js-advert-listing.qa-advert-listing");
 
     const products = await page.$$eval(
       ".b-advert-listing.js-advert-listing.qa-advert-listing .b-list-advert__item-wrapper.b-list-advert__item-wrapper--base",
@@ -334,8 +309,7 @@ export async function GET(request: NextRequest) {
     executablePath = process.env.PUPPETEER_EXCUTABLE_PATH; // Use the Docker environment variable
   } else {
     // Running locally - provide the Chromium executable path on your local machine
-    executablePath =
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; // Replace with the actual path on your machine
+    executablePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; // Replace with the actual path on your machine
   }
 
   const browser = await puppeteer.launch({
@@ -343,12 +317,7 @@ export async function GET(request: NextRequest) {
     defaultViewport: null,
     timeout: 120000,
     executablePath,
-    args: [
-      "--single-process",
-      "--no-zygote",
-      "--disable-setuid-sandbox",
-      "--no-sandbox",
-    ],
+    args: ["--single-process", "--no-zygote", "--disable-setuid-sandbox", "--no-sandbox"],
   });
 
   try {
