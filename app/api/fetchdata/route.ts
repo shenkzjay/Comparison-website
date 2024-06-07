@@ -15,7 +15,7 @@ async function JumiaScraper(search: string, context: BrowserContext) {
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    await page.waitForLoadState("networkidle");
+    // await page.waitForLoadState("networkidle");
 
     const jumia = await page
       .locator("div.-paxs.row._no-g._4cl-3cm-shs article")
@@ -41,8 +41,8 @@ async function JumiaScraper(search: string, context: BrowserContext) {
     }
 
     return jumia;
-  } catch (error) {
-    throw new Error(`An error occured while fetching Konga items ${error}`);
+  } catch (error: any) {
+    return { error: error?.message };
   }
 }
 
@@ -57,8 +57,6 @@ async function KongaScraper(search: string, context: BrowserContext) {
     await page.locator("form.f6ed2_25oVd > div > input").fill(searchQuery);
 
     await page.locator("form.f6ed2_25oVd > button").click();
-
-    // await page.waitForLoadState("networkidle");
 
     await new Promise((resolve) => setTimeout(resolve, 5000));
 
@@ -93,9 +91,9 @@ async function KongaScraper(search: string, context: BrowserContext) {
     }
 
     return konga;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
-    throw new Error(`An error occured while fetching Konga items ${error}`);
+    return { error: error?.message };
   }
 }
 
@@ -132,9 +130,9 @@ async function JijiScraper(search: string) {
     }
 
     return jiji;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
-    throw new Error(`An error occured while fetching Jiji items ${error}`);
+    return { error: error?.message };
   }
 }
 

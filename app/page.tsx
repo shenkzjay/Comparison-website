@@ -10,7 +10,8 @@ import { Cards } from "@/components/cards/card";
 import Jiji from "@/public/logo/jij.png";
 import Jumia from "@/public/logo/jumia.png";
 import Konga from "@/public/logo/konga.png";
-import { errors } from "@playwright/test";
+import { ImageIcon } from "@/public/imgIcon";
+import { CancelIcon } from "@/public/cancelIcon";
 
 export default function Home() {
   const [productData, setProductData] = useState<dataProps>({
@@ -19,15 +20,21 @@ export default function Home() {
     konga: [],
   });
 
+  console.log(productData, "productdata");
+
   const [loading, setLoading] = useState(false);
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
+
+  const [isSearched, setIsSearched] = useState<boolean>(false);
 
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+
+    setIsSearched(true);
+
     try {
       if (formRef.current) {
         const formData = new FormData(formRef.current);
@@ -35,17 +42,20 @@ export default function Home() {
         const query = formData.get("query") as string;
 
         console.log("data", query);
-
+        setLoading(true);
         const data = await getQuery(query);
 
         console.log("dataclient", data);
 
-        setProductData(data);
-        setLoading(false);
+        if (data) {
+          setProductData(data);
+          setLoading(false);
+        }
       }
     } catch (error: any) {
       setLoading(false);
-      setError(error);
+      setError(true);
+      console.log(error);
     }
   };
 
@@ -55,9 +65,13 @@ export default function Home() {
 
   return (
     <main className="w-[100dvw] h-[100dvh] flex flex-col">
-      <header className="flex flex-col justify-center items-center w-full mt-20 mb-6">
-        <h1 className="text-4xl font-bold">Get the best deals with our online price checker.</h1>
-        <p>Find the lowest prices with our online price comparison tool.</p>
+      <header className="flex flex-col justify-center items-center w-full mt-20 mb-6 gap-6 md:gap-0">
+        <h1 className="text-4xl font-bold mx-6 md:mx-0 text-center">
+          Get the best deals with our online price checker.
+        </h1>
+        <p className="mx-6 md:mx-0 text-center">
+          Find the lowest prices with our online price comparison tool.
+        </p>
       </header>
       <form onSubmit={handleSubmit} ref={formRef} className="mb-6">
         <fieldset className="flex flex-col justify-center items-center gap-6">
@@ -81,17 +95,35 @@ export default function Home() {
               <SearchBoxIcon IconColor="white" />
             </span>
           </div>
-          <button className="py-3 px-8 bg-[#1a1a1a] text-white rounded-full font-semibold">
-            Search
-          </button>
+          {loading ? (
+            <></>
+          ) : (
+            <button className="py-3 px-8 [transition:_padding_1s_ease-in-out] bg-[#1a1a1a] text-white rounded-full font-semibold">
+              Search
+            </button>
+          )}
         </fieldset>
       </form>
 
       <section className="">
-        {loading ? (
-          <div>Loader!!!</div>
-        ) : (
-          <div>
+        <div>
+          {loading ? (
+            <span className="hidden md:flex flex-col justify-center items-center h-[50vh]">
+              <span className="loader"></span>
+              <p>loading</p>
+            </span>
+          ) : error ? (
+            <span className="hidden md:flex flex-col justify-center items-center h-[50vh] gap-4">
+              <span className="h-[100px] w-[100px] text-red-600">
+                <CancelIcon />
+              </span>
+              <p className="w-1/2 flex justify-center items-center text-center">
+                An error has occured, please check your network connection and retry again!
+              </p>
+            </span>
+          ) : !isSearched ? (
+            <></>
+          ) : (
             <div className="hidden md:flex md:flex-col w-[80vw] mx-auto bg-[#f7f7f7] rounded-[20px]">
               <section className="flex flex-row justify-around gap-10 bg-[#f7f7f7] pt-6 rounded-[20px]">
                 <div className="b w-1/3 rounded-[10px] ml-10 p-2 flex justify-center">
@@ -108,7 +140,7 @@ export default function Home() {
               </section>
               <div className="grid grid-cols-[repeat(auto-fit,minmax(30ch,1fr))] gap-10 mx-10">
                 <div>
-                  {jiji.length > 0 ? (
+                  {jiji && Array.isArray(jiji) && jiji.length > 0 ? (
                     jiji.map((item, index) => (
                       <div key={index} className="my-6 ">
                         <Cards
@@ -120,11 +152,16 @@ export default function Home() {
                       </div>
                     ))
                   ) : (
-                    <div className="flex justify-center h-[50vh] items-center">No item found</div>
+                    <div className="flex justify-center h-[50vh] items-center">
+                      <span className="text-slate-200">
+                        <ImageIcon />
+                      </span>
+                      <p>No item found</p>
+                    </div>
                   )}
                 </div>
                 <div>
-                  {jumia.length > 0 ? (
+                  {jumia && Array.isArray(jumia) && jumia.length > 0 ? (
                     jumia.map((item, index) => (
                       <div key={index} className="my-6 ">
                         <Cards
@@ -136,11 +173,16 @@ export default function Home() {
                       </div>
                     ))
                   ) : (
-                    <div className="flex justify-center h-[50vh] items-center">No item found</div>
+                    <div className="flex justify-center h-[50vh] items-center">
+                      <span className="text-slate-200">
+                        <ImageIcon />
+                      </span>
+                      <p>No item found</p>
+                    </div>
                   )}
                 </div>
                 <div>
-                  {konga.length > 0 ? (
+                  {konga && Array.isArray(konga) && konga.length > 0 ? (
                     konga.map((item, index) => (
                       <div key={index} className="my-6 ">
                         <Cards
@@ -152,14 +194,37 @@ export default function Home() {
                       </div>
                     ))
                   ) : (
-                    <div className="flex justify-center h-[50vh] items-center">No item found</div>
+                    <div className="flex flex-col justify-center h-[50vh] items-center gap-4">
+                      <span className="text-slate-300 w-[100px] h-[100px]">
+                        <ImageIcon />
+                      </span>
+                      <p className="text-slate-400">No item found</p>
+                    </div>
                   )}
                 </div>
               </div>
             </div>
+          )}
 
-            {/* Mobile */}
-            <section>
+          {/* Mobile */}
+          <section>
+            {loading ? (
+              <span className="md:hidden flex flex-col justify-center items-center h-[50vh]">
+                <span className="loader"></span>
+                <p>loading</p>
+              </span>
+            ) : error ? (
+              <span className="flex md:hidden flex-col justify-center items-center h-[50vh] gap-4">
+                <span className="h-[100px] w-[100px] text-red-600">
+                  <CancelIcon />
+                </span>
+                <p className="w-1/2 flex justify-center items-center text-center">
+                  An error has occured, please check your network connection and retry again!
+                </p>
+              </span>
+            ) : !isSearched ? (
+              <></>
+            ) : (
               <section className="flex md:hidden flex-row justify-between bg-[#f6f6f6] p-2 mx-4 rounded-[20px] relative">
                 <input type="radio" id="jiji" name="tab-group" title="jiji" defaultChecked />
                 <label className="p-2 w-1/3 flex justify-center" htmlFor="jiji" tabIndex={0}>
@@ -190,7 +255,12 @@ export default function Home() {
                         </div>
                       ))
                     ) : (
-                      <div className="flex justify-center h-[50vh] items-center">No item found</div>
+                      <div className="flex flex-col justify-center h-[50vh] items-center gap-4">
+                        <span className="text-slate-300 w-[100px] h-[100px]">
+                          <ImageIcon />
+                        </span>
+                        <p className="text-slate-400">No item found</p>
+                      </div>
                     )}
                   </div>
                   <div className="content-2 m-6">
@@ -206,7 +276,12 @@ export default function Home() {
                         </div>
                       ))
                     ) : (
-                      <div className="flex justify-center h-[50vh] items-center">No item found</div>
+                      <div className="flex flex-col justify-center h-[50vh] items-center gap-4">
+                        <span className="text-slate-300 w-[100px] h-[100px]">
+                          <ImageIcon />
+                        </span>
+                        <p className="text-slate-400">No item found</p>
+                      </div>
                     )}
                   </div>
                   <div className="content-3 m-6">
@@ -222,14 +297,19 @@ export default function Home() {
                         </div>
                       ))
                     ) : (
-                      <div className="flex justify-center h-[50vh] items-center">No item found</div>
+                      <div className="flex flex-col justify-center h-[50vh] items-center gap-4">
+                        <span className="text-slate-300 w-[100px] h-[100px]">
+                          <ImageIcon />
+                        </span>
+                        <p className="text-slate-400">No item found</p>
+                      </div>
                     )}
                   </div>
                 </section>
               </section>
-            </section>
-          </div>
-        )}
+            )}
+          </section>
+        </div>
       </section>
     </main>
   );

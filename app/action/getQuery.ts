@@ -1,5 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-
 interface ProductsProps {
   itemImage: string;
   itemLink: string;
@@ -19,12 +17,18 @@ export interface dataProps {
 
 export const getQuery = async (searchQuery: string) => {
   try {
-    const response = await fetch(`http://localhost:3000/api/fetchdata?search=${searchQuery}`);
-    const data: dataProps = await response.json();
+    const response = await fetch(`http://localhost:3000/api/fetchdata?search=${searchQuery}`, {
+      method: "GET",
+    });
+
     if (!response.ok) {
       throw new Error(`API request failed with status ${response.status}`);
     }
+
+    const data: dataProps = await response.json();
+
     console.log("dataresponse", data);
+
     return data;
   } catch (error: any) {
     console.log(error);
