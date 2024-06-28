@@ -17,7 +17,7 @@ export interface dataProps {
 
 export const getQuery = async (searchQuery: string) => {
   try {
-    const response = await fetch(`http://localhost:3000/api/fetchdata?search=${searchQuery}`, {
+    const response = await fetch(`/api/fetchdata?search=${searchQuery}`, {
       method: "GET",
     });
 
